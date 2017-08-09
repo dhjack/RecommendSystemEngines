@@ -50,8 +50,8 @@ CREATE TABLE `userRates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # 数据在data目录下，这里需要改为实际路径
-LOAD DATA LOCAL INFILE '/tmp/t.movies.text' INTO TABLE moviesJsonInfo;
-LOAD DATA LOCAL INFILE '/tmp/t.rating.text' INTO TABLE userRates;
+LOAD DATA LOCAL INFILE '/tmp/t.movies.sql' INTO TABLE moviesJsonInfo;
+LOAD DATA LOCAL INFILE '/tmp/t.rating.sql' INTO TABLE userRates;
 ```
 ## 安装依赖
 ```
