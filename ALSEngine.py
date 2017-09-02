@@ -22,6 +22,10 @@ class ALSEngine():
         self.model.fit(behaviors)
         self.indexToRealId = dict(enumerate(df['artist'].cat.categories))
         self.realIdToIndex = dict((v,k) for k,v in self.indexToRealId.iteritems())
+
+        self.userIndexToRealId = dict(enumerate(df['user'].cat.categories))
+        self.userRealIdToIndex = dict((v,k) for k,v in self.userIndexToRealId.iteritems())
+
         self._item_norms = None
         print "init finish"
 
@@ -60,6 +64,19 @@ class ALSEngine():
         scores = self.model.item_factors.dot(factor) / self.item_norms / np.linalg.norm(factor, axis = -1)
         best = np.argpartition(scores, -N)[-N:]
         return sorted(best, key=lambda x: -scores[x])
+
+    def predict(self, uid, pid):
+        if uid not in self.userRealIdToIndex:
+            print "uid not in factors"
+            return None
+
+        if pid not in self.realIdToIndex:
+            print "pid not in factors"
+            return None 
+
+        userIndex = self.userRealIdToIndex[uid]
+        index = self.realIdToIndex[pid]
+        return self.model.user_factors[userIndex].dot(self.model.item_factors[index])
 
 def read_data(host, user, passwd):
     db = MySQLdb.connect(host, user, passwd, "reSystem", charset="utf8")
