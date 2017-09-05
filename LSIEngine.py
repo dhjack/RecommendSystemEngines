@@ -64,9 +64,9 @@ class LSIEngine():
         print  "lsi model cast :", (time.time() - lastTime)
         lastTime = time.time()
 
-        #corpus_lsi = lsi[corpus_tfidf] 
-        self.index = similarities.MatrixSimilarity(self.lsi[corpus]) 
-        self.corpus = corpus
+        #corpus_lsi = 
+        self.lsiSpace = self.lsi[corpus_tfidf] 
+        self.index = similarities.MatrixSimilarity(self.lsiSpace)
 
         self.pidName = getPidName()
         print "init finish"
@@ -76,17 +76,17 @@ class LSIEngine():
         localFactor = None
         for watchedPid, act in actions.iteritems():
             index = self.name2id[watchedPid]
-            print "watch ", self.pidName[watchedPid]
+            #print "watch ", self.pidName[watchedPid]
             if act == 1:
                 if localFactor is None:
-                    localFactor = [(w1, w2 * -1) for (w1, w2) in self.lsi[self.corpus[index]]]
+                    localFactor = [(w1, w2 * -1) for (w1, w2) in self.lsiSpace[index]]
                 else:
-                    localFactor = [(w11, (w12 + w22*-1)) for ((w11, w12), (w21, w22)) in zip(localFactor, self.lsi[self.corpus[index]])]
+                    localFactor = [(w11, (w12 + w22*-1)) for ((w11, w12), (w21, w22)) in zip(localFactor, self.lsiSpace[index])]
             else:
                 if localFactor is None:
-                    localFactor = self.lsi[self.corpus[index]]
+                    localFactor = self.lsiSpace[index]
                 else:
-                    localFactor = [(w11, (w12 + w22)) for ((w11, w12), (w21, w22)) in zip(localFactor, self.lsi[self.corpus[index]])]
+                    localFactor = [(w11, (w12 + w22)) for ((w11, w12), (w21, w22)) in zip(localFactor, self.lsiSpace[index])]
         if localFactor is None:
             return np.random.choice(self.name2id.keys())
         print localFactor 

@@ -5,6 +5,7 @@ import config
 import json
 from BayesEngine import BayesEngine, getUserBehavior, getMoviesInfo
 from ALSEngine import ALSEngine, read_data
+from LSIEngine import LSIEngine, readItemInfos
 import sys
 import random
 from scipy.sparse import coo_matrix
@@ -13,32 +14,28 @@ from math import sqrt
 
 def test1(b, info):
     if True:
-        #喜欢：银河系漫游指南(1292267)
-        #不喜欢：东京爱情故事(1438760)
+        print "喜欢：银河系漫游指南(1292267)"
+        print "不喜欢：东京爱情故事(1438760)"
         n2 = b.recommend(dict([(1292267L, 0), (1438760L, 1)]))
-        print n2
-        print info[n2]['title']
+        print "推荐：", info[n2]['title'], "(", n2, ")"
 
     if True:
-        #喜欢：东京爱情故事(1438760)
-        #不喜欢：银河系漫游指南(1292267)
+        print "喜欢：东京爱情故事(1438760)"
+        print "不喜欢：银河系漫游指南(1292267)"
         n2 = b.recommend(dict([(1438760L, 0), (1292267L, 1)]))
-        print n2
-        print info[n2]['title']
+        print "推荐：", info[n2]['title'], "(", n2, ")"
 
     if True:
-        #喜欢：武侠(4942776)    
-        #不喜欢: 三傻大佬宝莱坞(3793023)
+        print "喜欢：武侠(4942776)"
+        print "不喜欢: 三傻大佬宝莱坞(3793023)"
         n2 = b.recommend(dict([(4942776L, 0), (3793023L, 1)]))
-        print n2
-        print info[n2]['title']
+        print "推荐：", info[n2]['title'], "(", n2, ")"
 
     if True:
-        #喜欢：龙门客栈(1459054)
-        #不喜欢：驴得水(25921812)
+        print "喜欢：龙门客栈(1459054)"
+        print "不喜欢：驴得水(25921812)"
         n2 = b.recommend(dict([(1459054L, 0), (25921812L, 1)]))
-        print n2
-        print info[n2]['title']
+        print "推荐：", info[n2]['title'], "(", n2, ")"
 
 def getUserInfo(data):
     temp = {}
@@ -116,7 +113,8 @@ if __name__ == "__main__":
             engine = ALSEngine(df, plays)
             test1(engine, info)
         elif sys.argv[1] == "lsi":
-            pass
+            engine = LSIEngine(readItemInfos(host, user, passwd))
+            test1(engine, info)
         else:
             print "unknow"
     else:
@@ -149,6 +147,7 @@ if __name__ == "__main__":
             engine = ALSEngine(data, plays)
             alsValidation(testData, engine)
         elif sys.argv[1] == "lsi":
+            #engine = LSIEngine(readItemInfos(host, user, passwd))
             pass
         else:
             print "unknow"
