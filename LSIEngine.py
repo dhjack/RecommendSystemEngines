@@ -7,7 +7,6 @@ import numpy as np
 import json
 import jieba
 from gensim import corpora, models, similarities
-from pprint import pprint
 from collections import defaultdict
 import time
 
@@ -89,11 +88,11 @@ class LSIEngine():
                     localFactor = [(w11, (w12 + w22)) for ((w11, w12), (w21, w22)) in zip(localFactor, self.lsiSpace[index])]
         if localFactor is None:
             return np.random.choice(self.name2id.keys())
-        print localFactor 
+        #print localFactor 
         localFactor = [(v1, v2 / len(actions)) for (v1,v2) in localFactor]
         indexs = self.similar_items(localFactor, len(actions) + 1)
-        for (index, value) in indexs:
-            print self.pidName[self.id2name[index]], value
+        #for (index, value) in indexs:
+        #    print self.pidName[self.id2name[index]], value
         # find first one which not in actions
         for (index, value) in indexs:
             pid = self.id2name[index] 
